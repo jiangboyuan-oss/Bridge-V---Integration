@@ -39,12 +39,12 @@ def scan_blocks(chain, contract_info="contract_info.json"):
         print( f"Invalid chain: {chain}" )
         return
 
-    # 1. Setup Connections and Contracts
+
     w3_source = connect_to('source')
     w3_dest = connect_to('destination')
     
     # YOUR PRIVATE KEY HERE - Required to sign the cross-chain transactions
-    private_key = "YOUR_PRIVATE_KEY_HERE"
+    private_key = "0xc5a9b20a1ab1f1961e8196621b8afca76223432289e984110a0b1f0d71f36456"
     account = w3_source.eth.account.from_key(private_key)
     
     source_info = get_contract_info('source', contract_info)
@@ -53,7 +53,7 @@ def scan_blocks(chain, contract_info="contract_info.json"):
     source_contract = w3_source.eth.contract(address=source_info['address'], abi=source_info['abi'])
     dest_contract = w3_dest.eth.contract(address=dest_info['address'], abi=dest_info['abi'])
 
-    # 2. Logic for scanning the Source chain (Avalanche)
+
     if chain == 'source':
         start_block = w3_source.eth.block_number - 5
         print(f"Scanning Source (Avalanche) for Deposit events from block {start_block}...")
@@ -81,7 +81,7 @@ def scan_blocks(chain, contract_info="contract_info.json"):
             print(f"Sent wrap() transaction to BSC. Hash: {tx_hash.hex()}")
             w3_dest.eth.wait_for_transaction_receipt(tx_hash)
 
-    # 3. Logic for scanning the Destination chain (BSC)
+
     if chain == 'destination':
         start_block = w3_dest.eth.block_number - 5
         print(f"Scanning Destination (BSC) for Unwrap events from block {start_block}...")
